@@ -1,0 +1,49 @@
+<div>
+  <h1>Ordenes</h1>
+</div>
+<div>
+  <div style="height: 500px; overflow-y: auto;">
+    <div class="input-group w-25">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Buscar..."
+        [(ngModel)]="searchTerm">
+      <span class="input-group-text">
+          <i class="bi bi-search"></i>
+        </span>
+    </div>
+    <table class="table table-striped" id="table-data">
+      <thead>
+      <tr>
+        <th scope="col">Código de orden</th>
+        <th scope="col">Nombre del cliente</th>
+        <th scope="col">Email</th>
+        <th scope="col">Cantidad de productos</th>
+        <th scope="col">Fecha de compra</th>
+        <th scope="col">Total del pedido</th>
+      </tr>
+      </thead>
+      <tbody>
+
+        @for (order of orders  | filterBy: ['customerName', 'email']: searchTerm; track $index) {
+          <tr>
+            <td>{{order.orderCode}} </td>
+            <td>{{order.customerName}} </td>
+            <td>{{order.email}} </td>
+            <td>{{order.products.length}} </td>
+            <td>{{order.timestamp | date:'MMM d, yyyy' }} </td>
+            <td>{{order.total}} </td>
+          </tr>
+        }@empty {
+          <td colspan="7" class="text-center">
+            <div class="text-center p-3">
+              <div class="alert alert-secondary">
+                No hay ordenes para mostrar
+              </div>
+            </div>
+          </td>}
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-dark">
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link text-white" [routerLink]="'/orders'">
+          <span class="fs-5 ms-3 d-none d-lg-inline">Lista</span></a
+        >
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" [routerLink]="'/create-order'">
+          <span class="fs-5 ms-3 d-none d-lg-inline">Formulario</span></a
+        >
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="col-10 content-scroll" style="height: 200vh; margin-top: 5vh; padding-left: 20%; padding-right: 5%;">
+  <router-outlet></router-outlet>
+</div>
+
+
