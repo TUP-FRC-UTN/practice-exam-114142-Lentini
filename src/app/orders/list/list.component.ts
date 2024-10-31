@@ -2,7 +2,7 @@ import {Component, inject, OnInit} from '@angular/core';
 import {Order} from "../../models/Order";
 import {NgPipesModule} from "ngx-pipes";
 import {OrdersService} from "../../services/orders.service";
-import {RouterLink, RouterOutlet} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink, RouterOutlet} from "@angular/router";
 import {DatePipe} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 
@@ -24,11 +24,16 @@ export class ListComponent implements OnInit {
 
   orders: Order[] = [];
   private readonly service = inject(OrdersService);
+  route: ActivatedRoute = inject(ActivatedRoute);
+  router: Router = inject(Router);
   searchTerm: string = "";
 
   ngOnInit() {
     console.log("Cargando ordenes");
     this.cargarOrdenes();
+  }
+  irForm() {
+    this.router.navigate(['create-order']);
   }
   cargarOrdenes() {
     console.log("Cargando ordenes");

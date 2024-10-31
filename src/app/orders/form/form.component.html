@@ -1,1 +1,22 @@
-<p>form works!</p>
+ <form [formGroup]="form" (ngSubmit)="sendForm()" class="row g-3 container">
+   <div class="col-md-4">
+     <label for="validationCustom01" class="form-label">Nombre:</label>
+     <input [ngClass]="{'is-invalid':form.controls['name'].invalid && form.controls['name'].touched }"
+            formControlName="name" type="text" class="form-control">
+     @if(form.controls['name'].invalid && form.controls['name'].touched){
+       @if(form.controls['name'].errors?.['required']){
+         <div class="text-danger">Nombre obligatorio</div>
+       }}
+   </div>
+   <div class="col-md-4">
+     <label for="validationCustom02" class="form-label">Email:</label>
+     <input type="text" class="form-control" formControlName="email">
+     @if(form.controls['email'].errors?.['emailUni']){
+       <div class="text-danger"> Este dni ya existe.</div>
+     }
+   </div>
+  </form>
+<br>
+<div>
+  <button class="btn btn-primary" (click)="irForm()">Lista de ordenes</button>
+</div>
