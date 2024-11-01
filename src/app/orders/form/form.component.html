@@ -1,22 +1,97 @@
  <form [formGroup]="form" (ngSubmit)="sendForm()" class="row g-3 container">
    <div class="col-md-4">
-     <label for="validationCustom01" class="form-label">Nombre:</label>
+     <label for="validationCustom01" class="form-label">Nombre Cliente:</label>
      <input [ngClass]="{'is-invalid':form.controls['name'].invalid && form.controls['name'].touched }"
             formControlName="name" type="text" class="form-control">
      @if(form.controls['name'].invalid && form.controls['name'].touched){
+       @if(form.controls['name'].errors?.['minlength']){
+         <div class="text-danger">Debe tenes mas de 3 caracteres</div>
+       }
        @if(form.controls['name'].errors?.['required']){
          <div class="text-danger">Nombre obligatorio</div>
        }}
    </div>
    <div class="col-md-4">
      <label for="validationCustom02" class="form-label">Email:</label>
-     <input type="text" class="form-control" formControlName="email">
-     @if(form.controls['email'].errors?.['emailUni']){
-       <div class="text-danger"> Este dni ya existe.</div>
+     <input [ngClass]="{'is-invalid':form.controls['email'].invalid && form.controls['email'].touched}"
+            type="text" class="form-control" formControlName="email">
+     @if(form.controls['email'].invalid && form.controls['email'].touched){
+       @if(form.controls['email'].errors?.['required']){
+         <div class="text-danger">Email obligatorio</div>
+       }
+       @if(form.controls['email'].errors?.['email']){
+         <div class="text-danger"> Este email ya existe.</div>
+       }
      }
    </div>
+   <div formArrayName="products">
+     <div *ngFor="let product of products.controls; let i = index" [formGroupName]="i" class="row g-3" style="align-items: end; padding-bottom: 20px">
+       <div class="col-md-4">
+         <label for="productName" class="form-label">Nombre del producto:</label>
+         <select
+           class="form-control"
+           formControlName="nombre"
+           [ngClass]="{'is-invalid': product.get('nombre')?.invalid && product.get('nombre')?.touched}"
+         >
+           @for (option of productOptions; track $index) {
+             <option [value]="option.id">{{ option.name }}</option>
+           }
+         </select>
+         @if(product.get('nombre')?.invalid && product.get('nombre')?.touched){
+         <div class="text-danger">
+           Selecciona un producto
+         </div>}
+       </div>
+
+       <div class="col-md-2">
+         <label for="count" class="form-label">Cantidad:</label>
+         <input
+           type="number"
+           class="form-control"
+           formControlName="cantidad"
+           [ngClass]="{'is-invalid': product.get('cantidad')?.invalid && product.get('cantidad')?.touched}"
+         />
+         @if (product.get('cantidad')?.invalid && product.get('cantidad')?.touched) {
+           <div class="text-danger">
+             @if (product.get('cantidad')?.errors?.['required']){
+               <div>Cantidad es obligatoria</div>
+             }
+             @if(product.get('cantidad')?.errors?.['min']) {
+               <div >La cantidad debe ser mayor a 0</div>
+             }
+             @if(product.get('cantidad')?.errors?.['max']){
+               <div>No debe exceder el stock</div>
+             }
+           </div>
+         }
+       </div>
+
+       <div class="col-md-2">
+         <label for="price" class="form-label">Precio:</label>
+         <input type="text" class="form-control" formControlName="precio" readonly />
+       </div>
+
+       <div class="col-md-2">
+         <label for="stock" class="form-label">Stock:</label>
+         <input type="text" class="form-control" formControlName="stock" readonly />
+       </div>
+
+       <div class="col-md-2">
+         <button type="button" class="btn btn-danger" (click)="removeProduct(i)">Eliminar</button>
+       </div>
+     </div>
+   </div>
+   <div class="row">
+     <div class="col-auto">
+       <button class="btn btn-primary" (click)="irForm()">Listado de ordenes</button>
+     </div>
+     <div class="col-auto">
+       <button type="button" class="btn btn-secondary" (click)="addProduct()">Agregar Producto</button>
+     </div>
+
+     <div class="col-auto">
+       <button class="btn btn-primary" type="submit">Pedir</button>
+     </div>
+   </div>
   </form>
-<br>
-<div>
-  <button class="btn btn-primary" (click)="irForm()">Lista de ordenes</button>
-</div>
+
