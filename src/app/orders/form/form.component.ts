@@ -70,19 +70,23 @@ export class FormComponent implements OnInit{
       console.error("Error al obtener los productos", error);
     });
   }
-
+  getProductArray() {
+    return this.form.get('products') as FormArray;
+  }
   addProduct(): void {
     const productGroup = this.fb.group({
       nombre: ['', Validators.required],
-      cantidad: [1, [Validators.required, Validators.min(1)]],
+      cantidad: [1, [Validators.required, Validators.min(1), Validators.max(150)]],
       precio: [{ value: '', disabled: true }],
       stock: [{ value: '', disabled: true }]
     });
     productGroup.get('nombre')?.valueChanges.subscribe((selectedProductId) => {
       const selectedProduct = this.productOptions.find(product => product.id === selectedProductId);
       if (selectedProduct) {
+        console.log(Number(selectedProduct.stock));
         productGroup.get('precio')?.setValue(selectedProduct.price);
         productGroup.get('stock')?.setValue(selectedProduct.stock);
+        productGroup.get('cantidad')?.setValidators(Validators.max(Number(selectedProduct.stock)))
       }
     });
     this.products.push(productGroup);
