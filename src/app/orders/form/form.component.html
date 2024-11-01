@@ -5,7 +5,7 @@
             formControlName="name" type="text" class="form-control">
      @if(form.controls['name'].invalid && form.controls['name'].touched){
        @if(form.controls['name'].errors?.['minlength']){
-         <div class="text-danger">Debe tenes mas de 3 caracteres</div>
+         <div class="text-danger">Debe tener mas de 3 caracteres</div>
        }
        @if(form.controls['name'].errors?.['required']){
          <div class="text-danger">Nombre obligatorio</div>
@@ -79,7 +79,6 @@
          <label for="stock" class="form-label">Stock:</label>
          <input type="text" class="form-control" formControlName="stock" readonly />
        </div>
-
        <div class="col-md-2">
          <button type="button" class="btn btn-danger" (click)="removeProduct($index)">Eliminar</button>
        </div>

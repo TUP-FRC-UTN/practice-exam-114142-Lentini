@@ -11,7 +11,7 @@ export class OrdersService {
 
   constructor() { }
   url: string = "http://localhost:3000/orders";
-  private readonly http = inject(HttpClient);
+  private readonly http = inject(HttpClient); //para usar ir a app.config, poner esto: providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes),provideHttpClient()]
   getOrders(): Observable<Order[]> {
     this.url = "http://localhost:3000/orders"
     console.log("Getting all orders");
