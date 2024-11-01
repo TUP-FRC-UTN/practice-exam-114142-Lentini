@@ -20,13 +20,19 @@
          <div class="text-danger">Email obligatorio</div>
        }
        @if(form.controls['email'].errors?.['email']){
-         <div class="text-danger"> Este email ya existe.</div>
+         @if(form.controls['email'].errors?.['emailUnico']){
+           <div class="text-danger"> Este email ya existe.</div>
+         } @else {
+           <div class="text-danger"> Este email invalido.</div>
+         }
        }
+
      }
    </div>
    <div formArrayName="products">
-     <div *ngFor="let product of products.controls; let i = index" [formGroupName]="i" class="row g-3" style="align-items: end; padding-bottom: 20px">
-       <div class="col-md-4">
+     @for (product of products.controls; track $index) {
+     <div [formGroupName]="$index" class="row g-3" style="align-items: end; padding-bottom: 20px">
+       <div class="col-md-4" >
          <label for="productName" class="form-label">Nombre del producto:</label>
          <select
            class="form-control"
@@ -65,21 +71,20 @@
            </div>
          }
        </div>
-
        <div class="col-md-2">
          <label for="price" class="form-label">Precio:</label>
          <input type="text" class="form-control" formControlName="precio" readonly />
        </div>
-
        <div class="col-md-2">
          <label for="stock" class="form-label">Stock:</label>
          <input type="text" class="form-control" formControlName="stock" readonly />
        </div>
 
        <div class="col-md-2">
-         <button type="button" class="btn btn-danger" (click)="removeProduct(i)">Eliminar</button>
+         <button type="button" class="btn btn-danger" (click)="removeProduct($index)">Eliminar</button>
        </div>
      </div>
+     }
    </div>
    <div class="row">
      <div class="col-auto">

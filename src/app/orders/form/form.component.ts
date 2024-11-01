@@ -34,7 +34,7 @@ export class FormComponent implements OnInit{
   constructor(private fb: FormBuilder, private orderService: OrdersService) {
     this.form = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required, Validators.email], this.emailUnico()],
       products: this.fb.array([])
     });
     this.products = this.form.get('products') as FormArray;
@@ -45,6 +45,7 @@ export class FormComponent implements OnInit{
     return (control : AbstractControl) : Observable<ValidationErrors | null> => {
       return this.service.getOrderByEmail(control.value).pipe(
         map(data => {
+          console.log(data.pop());
           return data.length > 0 ? {email : true} : null
         }),
         catchError(() => {
@@ -74,11 +75,9 @@ export class FormComponent implements OnInit{
     const productGroup = this.fb.group({
       nombre: ['', Validators.required],
       cantidad: [1, [Validators.required, Validators.min(1)]],
-      precio: [{ value: '', disabled: true }], // Deshabilitado para que sea solo lectura
-      stock: [{ value: '', disabled: true }]   // Deshabilitado para que sea solo lectura
+      precio: [{ value: '', disabled: true }],
+      stock: [{ value: '', disabled: true }]
     });
-
-    // Suscribirse a los cambios del producto seleccionado
     productGroup.get('nombre')?.valueChanges.subscribe((selectedProductId) => {
       const selectedProduct = this.productOptions.find(product => product.id === selectedProductId);
       if (selectedProduct) {

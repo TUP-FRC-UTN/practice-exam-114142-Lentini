@@ -13,10 +13,12 @@ export class OrdersService {
   url: string = "http://localhost:3000/orders";
   private readonly http = inject(HttpClient);
   getOrders(): Observable<Order[]> {
+    this.url = "http://localhost:3000/orders"
     console.log("Getting all orders");
     return this.http.get<Order[]>(this.url);
   }
   getOrderByEmail(email: string) {
+    this.url = "http://localhost:3000/orders"
     console.log("Getting order by email: " + email);
     return this.http.get<Order[]>(this.url + "?email=" + email);
   }
