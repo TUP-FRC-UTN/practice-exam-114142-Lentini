@@ -34,7 +34,7 @@ export class FormComponent implements OnInit{
   constructor(private fb: FormBuilder, private orderService: OrdersService) {
     this.form = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.required, Validators.email], this.emailUnico()],
+      email: ['', [Validators.required, Validators.email], [this.emailUnico()]],
       products: this.fb.array([])
     });
     this.products = this.form.get('products') as FormArray;
@@ -46,7 +46,7 @@ export class FormComponent implements OnInit{
       return this.service.getOrderByEmail(control.value).pipe(
         map(data => {
           console.log(data.pop());
-          return data.length > 0 ? {email : true} : null
+          return data.length > 0 ? { emailUnico: true} : null
         }),
         catchError(() => {
           alert("error en la api")
@@ -86,7 +86,7 @@ export class FormComponent implements OnInit{
         console.log(Number(selectedProduct.stock));
         productGroup.get('precio')?.setValue(selectedProduct.price);
         productGroup.get('stock')?.setValue(selectedProduct.stock);
-        productGroup.get('cantidad')?.setValidators(Validators.max(Number(selectedProduct.stock)))
+        productGroup.get('cantidad')?.setValidators([Validators.required, Validators.min(1),Validators.max(Number(selectedProduct.stock))])
       }
     });
     this.products.push(productGroup);

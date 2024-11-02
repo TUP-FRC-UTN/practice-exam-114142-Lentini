@@ -19,15 +19,13 @@
        @if(form.controls['email'].errors?.['required']){
          <div class="text-danger">Email obligatorio</div>
        }
+       @if(form.controls['email'].errors?.['emailUnico']){
+         <div class="text-danger"> Este email ya existe.</div>
+       }
        @if(form.controls['email'].errors?.['email']){
-         @if(form.controls['email'].errors?.['emailUnico']){
-           <div class="text-danger"> Este email ya existe.</div>
-         } @else {
            <div class="text-danger"> Este email invalido.</div>
          }
        }
-
-     }
    </div>
    <div formArrayName="products">
      @for (product of products.controls; track $index) {
